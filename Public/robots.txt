@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://whiskly.whatcanieat.workers.dev/sitemap.xml
