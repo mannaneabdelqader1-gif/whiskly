@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Whiskly">
+  <rect width="64" height="64" rx="14" fill="#1F5C45"/>
+  <path fill="#F2B84B" d="M32 12c-1.2 0-2.2.8-2.5 1.9L27 28h10l-2.5-14.1C34.2 12.8 33.2 12 32 12z"/>
+  <path fill="#FAF8F2" d="M24 30h16v4c0 4-3 8-8 10v8h-2v-8c-5-2-8-6-8-10v-4z"/>
+  <circle cx="32" cy="22" r="2" fill="#1F5C45"/>
+</svg>
