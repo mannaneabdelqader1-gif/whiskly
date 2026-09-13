@@ -9,7 +9,7 @@
   <meta name="author" content="Whiskly">
   <meta name="robots" content="index, follow">
   <link rel="canonical" id="canonicalLink" href="https://whiskly.whatcanieat.workers.dev/">
-
+  
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Whiskly">
@@ -18,17 +18,19 @@
   <meta property="og:url" id="ogUrl" content="https://whiskly.whatcanieat.workers.dev/">
   <meta property="og:image" id="ogImage" content="https://whiskly.whatcanieat.workers.dev/og-image.svg">
   <meta property="og:locale" content="en_US">
-
+  
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" id="twTitle" content="Whiskly — Find recipes from your ingredients">
   <meta name="twitter:description" id="twDescription" content="Cook from what you have. Search by ingredients, plan meals, and generate a grocery list.">
   <meta name="twitter:image" id="twImage" content="https://whiskly.whatcanieat.workers.dev/og-image.svg">
-
+  
+  <!-- Favicon (SVG) -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
+  
   <meta name="theme-color" content="#1F5C45">
-
+  
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E2XBN094SK"></script>
   <script>
@@ -38,13 +40,12 @@
     gtag("js", new Date());
     gtag("config", window.GA_MEASUREMENT_ID, { send_page_view: false });
   </script>
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 </head>
-
 <body>
   <div class="app-shell">
     <header class="topbar">
@@ -64,7 +65,6 @@
         </div>
       </div>
     </header>
-
     <main class="container">
       <!-- HOME = ingredient search -->
       <section id="view-home" class="view active">
@@ -176,7 +176,6 @@
           </div>
         </div>
       </section>
-
       <!-- RECIPES = search by name -->
       <section id="view-search" class="view">
         <div class="panel">
@@ -261,7 +260,6 @@
           </div>
         </div>
       </section>
-
       <!-- PLANNER -->
       <section id="view-planner" class="view">
         <div class="panel">
@@ -303,7 +301,6 @@
           </div>
         </div>
       </section>
-
       <!-- SHOP / GROCERY -->
       <section id="view-shop" class="view">
         <div class="panel">
@@ -341,7 +338,6 @@
           </ul>
         </div>
       </section>
-
       <!-- FAVORITES -->
       <section id="view-favorites" class="view">
         <div class="panel">
@@ -358,7 +354,6 @@
           </div>
         </div>
       </section>
-
       <!-- RECIPE DETAIL -->
       <section id="view-recipe" class="view">
         <div class="panel" id="recipePage">
