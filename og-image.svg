@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#FAF8F2"/>
+  <rect x="0" y="0" width="1200" height="12" fill="#1F5C45"/>
+  <text x="80" y="280" font-family="Georgia, serif" font-size="96" font-weight="700" fill="#17231D">Whiskly</text>
+  <text x="80" y="360" font-family="system-ui, sans-serif" font-size="36" fill="#3d4f45">Your ingredients. Your meals.</text>
+  <circle cx="1000" cy="200" r="120" fill="#DCE8D9"/>
+  <circle cx="1080" cy="420" r="80" fill="#FFF3D6"/>
+</svg>
