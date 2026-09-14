@@ -93,7 +93,7 @@ const PATH_TO_VIEW = {
   "/": "home",
   "/recipes": "search",
   "/meal-plan": "planner",
-  "/grocery": "shop",
+  "/grocery": "planner",
   "/favorites": "favorites"
 };
 
@@ -521,6 +521,8 @@ function getServings() {
 
 /* ---------- Navigation ---------- */
 function showView(name, { skipUrl = false } = {}) {
+  // Grocery lives inside Meal Plan now
+  if (name === "shop") name = "planner";
   const current = document.querySelector(".view.active");
   const currentName = current ? (current.id || "").replace(/^view-/, "") : "";
   if (currentName && currentName !== name) {
@@ -544,6 +546,7 @@ function showView(name, { skipUrl = false } = {}) {
   if (name === "search" && !nameResults.length && !($("nameSearchInput")?.value || "").trim()) {
     loadRandomNameRecipes();
   }
+  if (name === "favorites") renderFavoritesPage();
 }
 function goBackView() {
   if (viewHistory.length > 1) viewHistory.pop();
@@ -1538,15 +1541,40 @@ function addIngredient(value, syncHome=true) {
   selectedIngredients.push(n);
   renderChips();
   if (syncHome) renderHomeChips();
+  syncSuggestChips();
   searchRecipes(true);
 }
 function removeIngredient(index) {
   selectedIngredients.splice(index, 1);
   renderChips();
   renderHomeChips();
+  syncSuggestChips();
   searchRecipes(true);
 }
 window.removeIngredient = removeIngredient;
+
+function toggleIngredient(value) {
+  const n = normalizeIngredient(value);
+  if (!n) return;
+  const idx = selectedIngredients.indexOf(n);
+  if (idx >= 0) {
+    selectedIngredients.splice(idx, 1);
+  } else {
+    selectedIngredients.push(n);
+  }
+  renderChips();
+  renderHomeChips();
+  syncSuggestChips();
+  searchRecipes(true);
+}
+window.toggleIngredient = toggleIngredient;
+
+function syncSuggestChips() {
+  document.querySelectorAll(".suggest-chip[data-add]").forEach(btn => {
+    const n = normalizeIngredient(btn.dataset.add);
+    btn.classList.toggle("selected", selectedIngredients.includes(n));
+  });
+}
 
 function renderChips() {
   const el = $("chips");
@@ -1564,6 +1592,7 @@ function renderHomeChips() {
   document.querySelectorAll("#homeIngredientChips .choice-chip").forEach(btn => {
     btn.classList.toggle("selected", selectedIngredients.includes(normalizeIngredient(btn.dataset.ing)));
   });
+  syncSuggestChips();
 }
 
 /* ---------- Modal / Recipe page ---------- */
@@ -2703,7 +2732,7 @@ function wireEvents() {
     const box = $("nameAdvancedFilters");
     if (!box) return;
     box.hidden = !box.hidden;
-    $("toggleNameAdvancedBtn").textContent = box.hidden ? "Advanced filters" : "Hide filters";
+    $("toggleNameAdvancedBtn").textContent = box.hidden ? "Advanced filters ▾" : "Advanced filters ▴";
   };
   if ($("nameSearchInput")) $("nameSearchInput").addEventListener("keydown", e => { if (e.key === "Enter") searchByName(true); });
   // Filters always re-run (works with empty query → random catalog + filters)
@@ -2732,7 +2761,10 @@ function wireEvents() {
     addIngredient($("ingredientInput")?.value || "");
     if ($("ingredientInput")) $("ingredientInput").value = "";
   };
-  document.querySelectorAll("[data-add]").forEach(b => b.addEventListener("click", () => addIngredient(b.dataset.add)));
+  // Popular chips toggle selection (color changes when selected)
+  document.querySelectorAll(".suggest-chip[data-add], [data-add]").forEach(b => {
+    b.addEventListener("click", () => toggleIngredient(b.dataset.add));
+  });
 
   // Match mode toggles
   document.querySelectorAll('input[name="matchMode"]').forEach(r => {
@@ -2749,14 +2781,25 @@ function wireEvents() {
       searchRecipes(true);
     });
   });
-  document.querySelectorAll(".pref").forEach(c => c.addEventListener("change", () => rankAndRender()));
+  document.querySelectorAll(".pref").forEach(c => c.addEventListener("change", () => {
+    const lab = c.closest(".quick-chip");
+    if (lab) lab.classList.toggle("active", c.checked);
+    rankAndRender();
+  }));
+  document.querySelectorAll(".namePref").forEach(c => c.addEventListener("change", () => {
+    const lab = c.closest(".quick-chip");
+    if (lab) lab.classList.toggle("active", c.checked);
+  }));
 
   if ($("toggleAdvancedBtn")) $("toggleAdvancedBtn").onclick = () => {
     const box = $("advancedFilters");
     if (!box) return;
     box.hidden = !box.hidden;
-    $("toggleAdvancedBtn").textContent = box.hidden ? "Advanced filters" : "Hide filters";
+    $("toggleAdvancedBtn").textContent = box.hidden ? "Advanced filters ▾" : "Advanced filters ▴";
   };
+  if ($("toggleNameAdvancedBtn")) {
+    // already wired above; ensure caret text
+  }
   if ($("recipeBackBtn")) $("recipeBackBtn").onclick = () => goBackView();
   if ($("findBtn")) $("findBtn").onclick = () => { searchRecipes(true); showView("home"); };
   if ($("randomBtn")) $("randomBtn").onclick = async () => {
@@ -2788,20 +2831,18 @@ function wireEvents() {
   };
   if ($("resetBtn")) $("resetBtn").onclick = () => {
     selectedIngredients = [];
-    renderChips(); renderHomeChips();
+    renderChips(); renderHomeChips(); syncSuggestChips();
     ["calories","protein"].forEach(id => { if ($(id)) $(id).value = ""; });
     if ($("time")) $("time").value = "999";
     if ($("mealType")) $("mealType").value = "any";
     if ($("goal")) $("goal").value = "any";
+    if ($("dietFilter")) $("dietFilter").value = "any";
     document.querySelectorAll(".pref").forEach(p => p.checked = false);
     searchRecipes(true);
   };
   if ($("loadMoreBtn")) $("loadMoreBtn").onclick = () => { if (hasMore && !isLoading) searchRecipes(false); };
 
-  if ($("savedTop")) $("savedTop").onclick = () => {
-    showView("favorites");
-    renderFavoritesPage();
-  };
+  // Favorites opened via nav ♡ (data-nav="favorites")
 
   // Home wizard
   document.querySelectorAll("#homeIngredientChips .choice-chip").forEach(btn => {
@@ -2914,10 +2955,12 @@ function routeFromLocation() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  startTypewriter();
+  // Typewriter optional (hero simplified)
+  if ($("typewriterText")) startTypewriter();
   wireEvents();
   renderChips();
   renderHomeChips();
+  syncSuggestChips();
   loadGroceryList();
   window.addEventListener("popstate", () => routeFromLocation());
   // Auto-restore plan silently if present
