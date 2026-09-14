@@ -56,75 +56,73 @@
         <nav class="nav-links">
           <a href="#" class="nav-link active" data-nav="home">Home</a>
           <a href="#" class="nav-link" data-nav="search">Recipes</a>
-          <a href="#" class="nav-link" data-nav="planner">Meal plan</a>
-          <a href="#" class="nav-link" data-nav="shop">Grocery List</a>
+          <a href="#" class="nav-link" data-nav="planner">Plan</a>
+          <a href="#" class="nav-link" data-nav="favorites">♡</a>
         </nav>
         <div class="nav-actions">
           <button class="theme-btn" id="themeToggle" type="button" title="Toggle day/night">🌙</button>
-          <button class="saved-pill" id="savedTop" type="button">♡ Favorites <span id="savedCount">0</span></button>
         </div>
       </div>
     </header>
     <main class="container">
       <!-- HOME = ingredient search -->
       <section id="view-home" class="view active">
-        <h1 class="page-h1">Cook with what you have</h1>
-        <div class="hero-type">
-          <div class="type-line"><span id="typewriterText"></span><span class="cursor"></span></div>
-          <p class="sub">Tell us what you have — we’ll find what you can cook.</p>
+        <div class="hero-home">
+          <h1 class="page-h1">Cook with what you have</h1>
+          <p class="hero-sub">Enter the ingredients in your kitchen</p>
         </div>
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <span class="eyebrow">Home</span>
-              <h2>Find meals from your ingredients</h2>
-              <p class="results-meta">Showing 60 meals at a time. Click load more for the next batch.</p>
-            </div>
-          </div>
-          <div class="field" style="margin-bottom:14px;">
-            <label>What ingredients do you have?</label>
+
+        <div class="panel home-search-panel">
+          <div class="field">
             <div class="ingredient-box">
               <div id="chips" class="chips"></div>
-              <input id="ingredientInput" type="text" autocomplete="off" placeholder="e.g. potato, tomato, chicken…">
-              <button type="button" class="primary-btn" id="addIngredientBtn" style="padding:10px 18px;">Add</button>
-            </div>
-            <div class="suggestions">
-              <button type="button" data-add="chicken">Chicken</button>
-              <button type="button" data-add="tuna">Tuna</button>
-              <button type="button" data-add="pasta">Pasta</button>
-              <button type="button" data-add="rice">Rice</button>
-              <button type="button" data-add="potato">Potato</button>
-              <button type="button" data-add="tomato">Tomato</button>
-              <button type="button" data-add="eggs">Eggs</button>
-              <button type="button" data-add="cheese">Cheese</button>
-              <button type="button" data-add="beef">Beef</button>
-              <button type="button" data-add="salmon">Salmon</button>
-              <button type="button" data-add="onion">Onion</button>
-              <button type="button" data-add="garlic">Garlic</button>
-              <button type="button" data-add="spinach">Spinach</button>
-              <button type="button" data-add="broccoli">Broccoli</button>
-              <button type="button" data-add="mushroom">Mushroom</button>
-              <button type="button" data-add="avocado">Avocado</button>
-              <button type="button" data-add="beans">Beans</button>
-              <button type="button" data-add="lentils">Lentils</button>
-              <button type="button" data-add="yogurt">Yogurt</button>
-              <button type="button" data-add="bread">Bread</button>
-              <button type="button" data-add="lemon">Lemon</button>
-              <button type="button" data-add="pepper">Pepper</button>
+              <input id="ingredientInput" type="text" autocomplete="off" placeholder="chicken, rice, eggs…">
+              <button type="button" class="add-chip-btn" id="addIngredientBtn">Add</button>
             </div>
           </div>
-          <div class="match-toggles">
-            <label class="toggle-pill active"><input type="radio" name="matchMode" value="similar" checked> Show similar recipes</label>
-            <label class="toggle-pill"><input type="radio" name="matchMode" value="flexible"> Allow a few missing (1–3)</label>
-            <label class="toggle-pill"><input type="radio" name="matchMode" value="exact"> Cook with what I have</label>
+
+          <div class="popular-label">Popular</div>
+          <div class="suggestions" id="homeSuggestions">
+            <button type="button" class="suggest-chip" data-add="chicken">Chicken</button>
+            <button type="button" class="suggest-chip" data-add="rice">Rice</button>
+            <button type="button" class="suggest-chip" data-add="eggs">Eggs</button>
+            <button type="button" class="suggest-chip" data-add="pasta">Pasta</button>
+            <button type="button" class="suggest-chip" data-add="tuna">Tuna</button>
+            <button type="button" class="suggest-chip" data-add="potato">Potato</button>
+            <button type="button" class="suggest-chip" data-add="tomato">Tomato</button>
+            <button type="button" class="suggest-chip" data-add="cheese">Cheese</button>
+            <button type="button" class="suggest-chip" data-add="beef">Beef</button>
+            <button type="button" class="suggest-chip" data-add="salmon">Salmon</button>
+            <button type="button" class="suggest-chip" data-add="onion">Onion</button>
+            <button type="button" class="suggest-chip" data-add="garlic">Garlic</button>
+            <button type="button" class="suggest-chip" data-add="spinach">Spinach</button>
+            <button type="button" class="suggest-chip" data-add="broccoli">Broccoli</button>
+            <button type="button" class="suggest-chip" data-add="mushroom">Mushroom</button>
+            <button type="button" class="suggest-chip" data-add="avocado">Avocado</button>
+            <button type="button" class="suggest-chip" data-add="beans">Beans</button>
+            <button type="button" class="suggest-chip" data-add="lentils">Lentils</button>
+            <button type="button" class="suggest-chip" data-add="yogurt">Yogurt</button>
+            <button type="button" class="suggest-chip" data-add="bread">Bread</button>
+            <button type="button" class="suggest-chip" data-add="lemon">Lemon</button>
+            <button type="button" class="suggest-chip" data-add="pepper">Pepper</button>
           </div>
-          <div class="btn-row">
-            <button type="button" class="primary-btn" id="findBtn">Search recipes</button>
-            <button type="button" class="secondary-btn" id="randomBtn">🔀 Shuffle recipes</button>
-            <button type="button" class="secondary-btn" id="toggleAdvancedBtn">Advanced filters</button>
-            <button type="button" class="secondary-btn" id="resetBtn">Reset</button>
+
+          <button type="button" class="cta-find" id="findBtn">🔍 Find My Recipes</button>
+
+          <div class="quick-filters">
+            <label class="quick-chip"><input class="pref" type="checkbox" value="high-protein"> 🔥 High protein</label>
+            <label class="quick-chip"><input class="pref" type="checkbox" value="quick"> ⚡ Quick</label>
+            <label class="quick-chip"><input class="pref" type="checkbox" value="low-calorie"> 🥗 Lower calorie</label>
           </div>
-          <div id="advancedFilters" hidden style="margin-top:18px;padding-top:18px;border-top:1px solid var(--line);">
+
+          <button type="button" class="adv-toggle" id="toggleAdvancedBtn">Advanced filters ▾</button>
+
+          <div id="advancedFilters" class="advanced-box" hidden>
+            <div class="match-toggles">
+              <label class="toggle-pill active"><input type="radio" name="matchMode" value="similar" checked> Similar</label>
+              <label class="toggle-pill"><input type="radio" name="matchMode" value="flexible"> Allow 1–3 missing</label>
+              <label class="toggle-pill"><input type="radio" name="matchMode" value="exact"> Only what I have</label>
+            </div>
             <div class="filters-grid">
               <div class="field"><label for="goal">Goal</label>
                 <select id="goal"><option value="any">Any goal</option><option value="lose-fat">Lose fat</option><option value="maintain">Maintain</option><option value="build-muscle">Build muscle</option></select>
@@ -152,24 +150,24 @@
                 </select>
               </div>
             </div>
-            <div class="pref-row">
-              <label class="check"><input class="pref" type="checkbox" value="high-protein"> High protein</label>
-              <label class="check"><input class="pref" type="checkbox" value="low-calorie"> Lower calories</label>
-              <label class="check"><input class="pref" type="checkbox" value="quick"> Quick</label>
+            <div class="btn-row" style="margin-top:12px;">
+              <button type="button" class="secondary-btn" id="resetBtn">Reset</button>
+              <button type="button" class="secondary-btn" id="randomBtn">🔀 Shuffle</button>
             </div>
           </div>
         </div>
-        <div class="panel">
+
+        <div class="panel results-panel">
           <div class="panel-head">
             <div>
               <span class="eyebrow">Results</span>
               <h2 id="resultsTitle">Your recipes will appear here</h2>
-              <p class="results-meta" id="matchInfo">Add ingredients, then search. Load more when you want another batch.</p>
+              <p class="results-meta" id="matchInfo">Add ingredients, then hit Find My Recipes.</p>
             </div>
           </div>
           <div id="activeSearch" class="match-legend" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;"></div>
           <div id="mealGrid" class="meal-grid">
-            <div class="empty-state"><div class="empty-icon">🔎</div><h3>What's in your kitchen?</h3><p>Add ingredients and search the catalog.</p></div>
+            <div class="empty-state"><div class="empty-icon">🔎</div><h3>What's in your kitchen?</h3><p>Add ingredients and find recipes you can make.</p></div>
           </div>
           <div class="load-more-wrap">
             <button id="loadMoreBtn" class="load-more" type="button" hidden>Load more meals</button>
@@ -178,28 +176,31 @@
       </section>
       <!-- RECIPES = search by name -->
       <section id="view-search" class="view">
-        <div class="panel">
+        <div class="panel home-search-panel">
           <div class="panel-head">
             <div>
               <span class="eyebrow">Recipe library</span>
               <h1 class="page-h1-inline">Search meals by name</h1>
-              <h2 class="visually-hidden">Recipe search</h2>
-              <p class="results-meta">Browse the catalog or search by dish name. Results load in batches.</p>
+              <p class="results-meta">Browse the catalog or type a dish name.</p>
             </div>
           </div>
           <div class="field">
-            <label for="nameSearchInput">Meal name</label>
             <div class="ingredient-box">
               <input id="nameSearchInput" type="text" placeholder="e.g. chicken pasta, tuna casserole…">
             </div>
           </div>
-          <div class="btn-row" style="margin-top:14px;">
-            <button type="button" class="primary-btn" id="nameSearchBtn">Search recipes</button>
-            <button type="button" class="secondary-btn" id="nameShuffleBtn">🔀 Shuffle recipes</button>
-            <button type="button" class="secondary-btn" id="nameResetBtn">↺ Reset</button>
-            <button type="button" class="secondary-btn" id="toggleNameAdvancedBtn">Advanced filters</button>
+
+          <button type="button" class="cta-find" id="nameSearchBtn">🔍 Find My Recipes</button>
+
+          <div class="quick-filters">
+            <label class="quick-chip"><input class="namePref" type="checkbox" value="high-protein"> 🔥 High protein</label>
+            <label class="quick-chip"><input class="namePref" type="checkbox" value="quick"> ⚡ Quick</label>
+            <label class="quick-chip"><input class="namePref" type="checkbox" value="low-calorie"> 🥗 Lower calorie</label>
           </div>
-          <div id="nameAdvancedFilters" hidden style="margin-top:18px;padding-top:18px;border-top:1px solid var(--line);">
+
+          <button type="button" class="adv-toggle" id="toggleNameAdvancedBtn">Advanced filters ▾</button>
+
+          <div id="nameAdvancedFilters" class="advanced-box" hidden>
             <div class="filters-grid">
               <div class="field"><label for="nameDietFilter">Diet</label>
                 <select id="nameDietFilter">
@@ -237,14 +238,13 @@
                 <input id="nameProtein" type="number" min="1" placeholder="Any">
               </div>
             </div>
-            <div class="pref-row">
-              <label class="check"><input class="namePref" type="checkbox" value="high-protein"> High protein</label>
-              <label class="check"><input class="namePref" type="checkbox" value="low-calorie"> Lower calories</label>
-              <label class="check"><input class="namePref" type="checkbox" value="quick"> Quick</label>
+            <div class="btn-row" style="margin-top:12px;">
+              <button type="button" class="secondary-btn" id="nameResetBtn">↺ Reset</button>
+              <button type="button" class="secondary-btn" id="nameShuffleBtn">🔀 Shuffle</button>
             </div>
           </div>
         </div>
-        <div class="panel">
+        <div class="panel results-panel">
           <div class="panel-head">
             <div>
               <span class="eyebrow">Results</span>
@@ -260,21 +260,20 @@
           </div>
         </div>
       </section>
-      <!-- PLANNER -->
+      <!-- PLANNER + GROCERY -->
       <section id="view-planner" class="view">
         <div class="panel">
           <div class="panel-head">
             <div>
               <span class="eyebrow">Weekly plan</span>
               <h1 class="page-h1-inline">Plan your week</h1>
-              <h2 class="visually-hidden">Weekly meal planner</h2>
-              <p class="results-meta">Random balanced meals near your calorie target, or build around what you have. Same meal used at most twice.</p>
+              <p class="results-meta">Balanced meals near your targets, or build around what you have.</p>
             </div>
             <div class="btn-row">
               <button type="button" class="secondary-btn" id="useIngredientsPlanBtn">Use what I have</button>
-              <button type="button" class="primary-btn" id="generatePlanBtn">Generate random week →</button>
-              <button type="button" class="secondary-btn" id="savePlanBtn">💾 Save plan</button>
-              <button type="button" class="secondary-btn" id="loadPlanBtn">📂 Load plan</button>
+              <button type="button" class="primary-btn" id="generatePlanBtn">Generate week →</button>
+              <button type="button" class="secondary-btn" id="savePlanBtn">💾 Save</button>
+              <button type="button" class="secondary-btn" id="loadPlanBtn">📂 Load</button>
             </div>
           </div>
           <div class="planner-options">
@@ -300,21 +299,19 @@
             <div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon">📅</div><h3>Your week starts here</h3><p>Generate a plan or add recipes to specific days.</p></div>
           </div>
         </div>
-      </section>
-      <!-- SHOP / GROCERY -->
-      <section id="view-shop" class="view">
-        <div class="panel">
+
+        <!-- Grocery nested under Plan -->
+        <div class="panel" id="view-shop">
           <div class="panel-head">
             <div>
-              <span class="eyebrow">Grocery List</span>
-              <h1 class="page-h1-inline">Grocery list</h1>
-              <h2 class="visually-hidden">Shopping list from your meal plan</h2>
-              <p class="results-meta">Core vs supporting ingredients, with quantities.</p>
+              <span class="eyebrow">From your plan</span>
+              <h2 class="page-h1-inline" style="font-size:1.4rem;">Grocery list</h2>
+              <p class="results-meta">Generate quantities from the week above.</p>
             </div>
             <div class="btn-row">
-              <button type="button" class="primary-btn" id="buildShopBtn">Generate from plan</button>
-              <button type="button" class="secondary-btn" id="saveShopBtn">💾 Save list</button>
-              <button type="button" class="secondary-btn" id="clearShopBtn">Clear list</button>
+              <button type="button" class="primary-btn" id="buildShopBtn">Generate list</button>
+              <button type="button" class="secondary-btn" id="saveShopBtn">💾 Save</button>
+              <button type="button" class="secondary-btn" id="clearShopBtn">Clear</button>
             </div>
           </div>
           <div style="margin-bottom:14px;">
@@ -330,7 +327,7 @@
             </div>
             <div class="btn-row" style="margin-top:12px;">
               <button type="button" class="secondary-btn" id="shopModeDays">Separate by day</button>
-              <button type="button" class="primary-btn" id="shopModeMerged">Merge selected days</button>
+              <button type="button" class="primary-btn" id="shopModeMerged">Merge selected</button>
             </div>
           </div>
           <ul id="shopList" class="shop-list">
