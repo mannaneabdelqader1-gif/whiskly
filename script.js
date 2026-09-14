@@ -1356,8 +1356,10 @@ function scoreMeal(meal) {
     }
   }
 
-  // Quick filter: hard filter (not just a bonus)
-  if (prefs.includes("quick") && (meal.time || 99) > 20) return -Infinity;
+  // Quick filters: hard filters (must match to appear)
+  if (prefs.includes("quick") && (meal.time == null || meal.time > 20)) return -Infinity;
+  if (prefs.includes("high-protein") && (meal.protein == null || meal.protein < 30)) return -Infinity;
+  if (prefs.includes("low-calorie") && (meal.cal == null || meal.cal > 500)) return -Infinity;
 
   let score = 0;
   if (selectedIngredients.length > 0) {
@@ -1408,9 +1410,9 @@ function scoreMeal(meal) {
     if (meat) return -Infinity;
     score += 25;
   }
-  if (prefs.includes("high-protein") && meal.protein >= 30) score += 30;
-  if (prefs.includes("low-calorie") && meal.cal <= 450) score += 25;
-  if (prefs.includes("quick") && meal.time <= 20) score += 40;
+  if (prefs.includes("high-protein") && (meal.protein || 0) >= 30) score += 30;
+  if (prefs.includes("low-calorie") && (meal.cal || 9999) <= 500) score += 25;
+  if (prefs.includes("quick") && (meal.time || 99) <= 20) score += 40;
 
   if (preferMyIngredients && selectedIngredients.length) {
     score += match.matchRate * 5;
