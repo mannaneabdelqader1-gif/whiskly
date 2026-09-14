@@ -61,6 +61,70 @@ function setPageMeta({ title, description, path, image }) {
   } catch (e) {}
 }
 
+/** Google-rich Recipe JSON-LD for Search Console / rich results */
+function setRecipeSchema(meal, path) {
+  const el = document.getElementById("schema-recipe");
+  if (!el) return;
+  if (!meal) {
+    el.textContent = "";
+    return;
+  }
+  const url = SITE_ORIGIN + (path || recipePath(meal));
+  const image = meal.image || meal.fallbackImage || (SITE_ORIGIN + "/og-image.svg");
+  const ingredients = Array.isArray(meal.ingredients)
+    ? meal.ingredients.map(i => (typeof i === "string" ? i : (i.name || i.item || String(i)))).filter(Boolean)
+    : [];
+  const instructions = Array.isArray(meal.steps)
+    ? meal.steps.map((s, i) => ({
+        "@type": "HowToStep",
+        position: i + 1,
+        text: typeof s === "string" ? s : (s.text || s.step || String(s))
+      }))
+    : [];
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Recipe",
+    name: meal.name,
+    url,
+    image: [image],
+    description: `Recipe for ${meal.name}${meal.time ? ` · ${meal.time} min` : ""}`,
+    recipeCategory: meal.type || "Dinner",
+    recipeCuisine: (meal.dietTags && meal.dietTags[0]) || undefined,
+    prepTime: meal.time ? `PT${Math.max(1, Math.round(meal.time * 0.3))}M` : undefined,
+    cookTime: meal.time ? `PT${Math.max(1, Math.round(meal.time * 0.7))}M` : undefined,
+    totalTime: meal.time ? `PT${Math.round(meal.time)}M` : undefined,
+    recipeYield: String(meal.baseServings || meal.servings || 4),
+    recipeIngredient: ingredients.length ? ingredients : undefined,
+    recipeInstructions: instructions.length ? instructions : undefined,
+    nutrition: (meal.cal != null || meal.protein != null) ? {
+      "@type": "NutritionInformation",
+      calories: meal.cal != null ? `${Math.round(meal.cal)} calories` : undefined,
+      proteinContent: meal.protein != null ? `${Math.round(meal.protein)} g` : undefined,
+      carbohydrateContent: meal.carbs != null ? `${Math.round(meal.carbs)} g` : undefined,
+      fatContent: meal.fat != null ? `${Math.round(meal.fat)} g` : undefined
+    } : undefined,
+    author: { "@type": "Organization", name: "Whiskly" }
+  };
+  // Strip undefined keys for cleaner JSON
+  const clean = (obj) => {
+    if (Array.isArray(obj)) return obj.map(clean).filter(v => v !== undefined);
+    if (obj && typeof obj === "object") {
+      const out = {};
+      for (const [k, v] of Object.entries(obj)) {
+        if (v === undefined) continue;
+        out[k] = clean(v);
+      }
+      return out;
+    }
+    return obj;
+  };
+  el.textContent = JSON.stringify(clean(schema));
+}
+
+function clearRecipeSchema() {
+  setRecipeSchema(null);
+}
+
 const VIEW_META = {
   home: {
     title: "Whiskly — Find recipes from your ingredients",
@@ -537,6 +601,7 @@ function showView(name, { skipUrl = false } = {}) {
   const el = $("view-" + name);
   if (el) el.classList.add("active");
   window.scrollTo({ top: 0, behavior: "smooth" });
+  if (name !== "recipe") clearRecipeSchema();
   if (!skipUrl && name !== "recipe" && VIEW_META[name]) {
     const meta = VIEW_META[name];
     navigateTo(meta.path, { replace: false });
@@ -1715,6 +1780,7 @@ function showRecipe(id) {
     path: rPath,
     image: meal.image || meal.fallbackImage || (SITE_ORIGIN + "/og-image.svg")
   });
+  setRecipeSchema(meal, rPath);
   trackEvent("recipe_view", { recipe_id: String(meal.id), recipe_name: meal.name, recipe_type: meal.type });
 
   const redrawIngs = () => {
@@ -2952,6 +3018,15 @@ function routeFromLocation() {
   const view = PATH_TO_VIEW[norm] || PATH_TO_VIEW[path] || "home";
   showView(view, { skipUrl: true });
   if (VIEW_META[view]) setPageMeta(VIEW_META[view]);
+  // Google sitelinks search box: /recipes?q=...
+  try {
+    const params = new URLSearchParams(location.search || "");
+    const q = (params.get("q") || "").trim();
+    if (q && (view === "search" || norm === "/recipes")) {
+      if ($("nameSearchInput")) $("nameSearchInput").value = q;
+      searchByName(true);
+    }
+  } catch (e) {}
 }
 
 document.addEventListener("DOMContentLoaded", () => {
