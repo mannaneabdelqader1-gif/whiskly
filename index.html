@@ -7,8 +7,37 @@
   <meta name="description" content="Whiskly helps you cook from what you already have. Search recipes by ingredients, plan your week, and build a grocery list — free and private in your browser.">
   <meta name="keywords" content="recipes, meal planner, ingredients, grocery list, what to cook, Whiskly">
   <meta name="author" content="Whiskly">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" id="canonicalLink" href="https://whiskly.whatcanieat.workers.dev/">
+
+  <!-- Google Search Console — replace YOUR_VERIFICATION_CODE with the token from Search Console → Settings → Ownership verification → HTML tag -->
+  <meta name="google-site-verification" content="googleb299b5761a46afe4">
+
+  <!-- Structured data for Google Search (site + sitelinks search box) -->
+  <script type="application/ld+json" id="schema-website">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Whiskly",
+    "alternateName": "What Can I Eat",
+    "url": "https://whiskly.whatcanieat.workers.dev/",
+    "description": "Find recipes from your ingredients, plan meals, and build a grocery list.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://whiskly.whatcanieat.workers.dev/recipes?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Whiskly",
+      "url": "https://whiskly.whatcanieat.workers.dev/"
+    }
+  }
+  </script>
+  <script type="application/ld+json" id="schema-recipe"></script>
   
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -69,6 +98,9 @@
       <section id="view-home" class="view active">
         <div class="hero-home">
           <h1 class="page-h1">Cook with what you have</h1>
+          <div class="hero-type">
+            <div class="type-line"><span id="typewriterText"></span><span class="cursor"></span></div>
+          </div>
           <p class="hero-sub">Enter the ingredients in your kitchen</p>
         </div>
 
